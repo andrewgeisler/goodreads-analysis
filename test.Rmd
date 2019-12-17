@@ -1,0 +1,266 @@
+---
+title: "GoodReads Year In Review"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    theme: flatly
+  runtime: shiny
+    # vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(plotly)
+library(bubbles)
+source('r/analysis.R')
+
+plot_summary <- function(measure) {
+  yearly_summary %>%
+    mutate(year_read = factor(year_read)) %>%
+    ggplot(
+      aes(
+        x = year_read,
+        y = !!measure,
+        color = year_read,
+        fill = year_read
+      )
+    ) +
+    geom_col() +
+    theme_minimal()
+}
+
+
+yearly_summary <- yearly_summary %>%
+  gather(measure, value, books:avg_goodreads_rating) %>%
+  spread(year_read, value) %>%
+  mutate(
+    percent_change = `2019`/`2018`,
+    percent_change = percent_change -1
+  )
+
+
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Books
+
+```{r}
+
+renderValueBox({
+  valueBox(
+    yearly_summary %>%
+      filter(measure == 'books') %>%
+      pull(`2019`) %>%
+      scales::comma()
+  )
+})
+
+```
+
+### Pages
+
+```{r}
+
+renderValueBox({
+  valueBox(
+    yearly_summary %>%
+      filter(measure == 'pages') %>%
+      pull(`2019`) %>%
+      scales::comma()
+  )
+})
+
+```
+
+### Pages Read Per Day
+
+```{r}
+renderValueBox({
+  valueBox(
+    yearly_summary %>%
+      filter(measure == 'avg_pages_per_day') %>%
+      pull(`2019`) %>%
+      scales::comma()
+  )
+})
+```
+
+### Median Days to Complete
+
+```{r}
+renderValueBox({
+  valueBox(
+    yearly_summary %>%
+      filter(measure == 'median_days_to_read') %>%
+      pull(`2019`) %>%
+      scales::comma()
+  )
+})
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Books
+
+```{r}
+
+renderValueBox({
+  valueBox(
+    yearly_summary %>%
+      filter(measure == 'books') %>%
+      pull(percent_change) %>%
+      scales::percent()
+  )
+})
+
+```
+
+### Pages
+
+```{r}
+
+renderValueBox({
+  valueBox(
+    yearly_summary %>%
+      filter(measure == 'pages') %>%
+      pull(percent_change) %>%
+      scales::percent()
+  )
+})
+
+```
+
+### Pages Read Per Day
+
+```{r}
+renderValueBox({
+  valueBox(
+    yearly_summary %>%
+      filter(measure == 'avg_pages_per_day') %>%
+      pull(percent_change) %>%
+      scales::percent()
+  )
+})
+```
+
+### Median Days to Complete
+
+```{r}
+renderValueBox({
+  valueBox(
+    yearly_summary %>%
+      filter(measure == 'median_days_to_read') %>%
+      pull(percent_change) %>%
+      scales::percent()
+  )
+})
+```
+
+
+Row 
+-----------------------------------------------------------------------
+
+### Top Authors By Pages Read
+
+```{r}
+p_authors_pages <- top_authors_pages_read %>%
+  filter(year_read == 2019) %>%
+  ggplot(
+    aes(
+      x = reorder(author_name,pages),
+      y = pages,
+      color = author_name,
+      fill = author_name,
+      label = scales::comma(pages)
+    )
+  ) +
+  geom_col() +
+  geom_text(hjust = 1.5, color = 'black', alpha = .7, size = 3) +
+  theme_minimal() +
+  theme(
+    legend.position = 'none',
+    axis.title = element_blank(),
+    axis.text.x = element_blank()
+  ) +
+  coord_flip()
+
+p_authors_pages
+# ggplotly(p_authors_pages)
+```
+
+### Top Authors By Books Read
+
+```{r}
+p_authors_books <- top_authors_books_read %>%
+  filter(year_read == 2019, books > 1) %>%
+  ggplot(
+    aes(
+      x = reorder(author_name,books),
+      y = books,
+      color = author_name,
+      fill = author_name,
+      label = scales::comma(books)
+    )
+  ) +
+  geom_col() +
+  geom_text(hjust = 1.5, color = 'black', alpha = .7, size = 3) +
+  theme_minimal() +
+  theme(
+    legend.position = 'none',
+    axis.title = element_blank(),
+    axis.text.x = element_blank()
+  ) +
+  coord_flip()
+
+p_authors_books
+
+```
+
+### Top Genre Tags
+
+```{r}
+
+renderBubbles({
+  bubbles(
+    value = top_genres %>% filter(year_read == 2019) %>% pull(books), 
+    label = top_genres %>% filter(year_read == 2019) %>% pull(shelf)
+  )
+})
+
+# top_genres %>%
+#   filter(year_read == 2019) %>%
+#   ggplot(aes(label = shelf, size = books, color = shelf)) +
+#   geom_text_wordcloud_area(
+#     eccentricity = .8,
+#     shape = 'circle',
+#     area_corr = TRUE,
+#     # area_corr_power = 1/.8
+#   ) +
+#   scale_size_area(max_size = 20) +
+#   theme_minimal()
+
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Reading Pace Since 2018
+
+```{r}
+p_reading_pace <- ggplot(reading_pace, aes(x = date)) +
+  geom_line(aes(y = rolling_avg), alpha = .5, linetype = 2) +
+  geom_jitter(aes(y = est_pages, color = title), size = 2) +
+  geom_smooth(aes(y=rolling_avg), se = F, color = 'purple', size = 1, alpha = .6) +
+  theme_minimal() +
+  theme(legend.position = 'none', axis.text.x = element_text(angle = 90), axis.title.x = element_blank()) +
+  scale_x_date(date_breaks = '1 month', date_labels = '%b-%y') +
+  labs(
+    y = 'Esimated Pages Per Day'
+  )
+
+p_reading_pace
+```
