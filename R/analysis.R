@@ -3,7 +3,7 @@ library(tidyverse)
 library(xml2)
 library(lubridate)
 library(zoo)
-library(ggwordcloud)
+# library(ggwordcloud)
 
 
 # LOAD DATA ---------------------------------------------------------------
