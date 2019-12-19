@@ -1,0 +1,196 @@
+---
+title: "GoodReads Year In Review: 2019"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: scroll
+    css: style.css
+    #source_code: embed
+    # theme: flatly
+runtime: shiny
+    # vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(plotly)
+library(bubbles)
+source('R/analysis.R')
+
+
+```
+
+Row 
+-----------------------------------------------------------------------
+
+### Books
+
+```{r}
+
+renderValueBox({
+  valueBox(
+    yearly_summary_long %>%
+      filter(measure == 'books') %>%
+      pull(`2019`) %>%
+      scales::comma()
+  )
+})
+
+```
+
+### Pages
+
+```{r}
+
+renderValueBox({
+  valueBox(
+    yearly_summary_long %>%
+      filter(measure == 'pages') %>%
+      pull(`2019`) %>%
+      scales::comma()
+  )
+})
+
+```
+
+### Pages Read Per Day
+
+```{r}
+renderValueBox({
+  valueBox(
+    yearly_summary_long %>%
+      filter(measure == 'avg_pages_per_day') %>%
+      pull(`2019`) %>%
+      scales::comma()
+  )
+})
+```
+
+### Median Days to Complete
+
+```{r}
+renderValueBox({
+  valueBox(
+    yearly_summary_long %>%
+      filter(measure == 'median_days_to_read') %>%
+      pull(`2019`) %>%
+      scales::comma()
+  )
+})
+```
+
+Row 
+-----------------------------------------------------------------------
+
+### Books
+
+```{r}
+
+renderValueBox({
+  valueBox(
+    yearly_summary_long %>%
+      filter(measure == 'books') %>%
+      pull(raw_diff) %>%
+      scales::comma(),
+    caption = 'More books read in 2019'
+    )
+})
+
+```
+
+### Pages
+
+```{r}
+
+renderValueBox({
+  valueBox(
+    yearly_summary_long %>%
+      filter(measure == 'pages') %>%
+      pull(raw_diff) %>%
+      scales::comma(),
+    caption = 'More pages read in 2019'
+  )
+})
+
+```
+
+### Pages Read Per Day
+
+```{r}
+renderValueBox({
+  valueBox(
+    yearly_summary_long %>%
+      filter(measure == 'avg_pages_per_day') %>%
+      pull(raw_diff) %>%
+      scales::comma(),
+    caption = 'Increase in pages read per day'
+  )
+})
+```
+
+### Median Days to Complete
+
+```{r}
+renderValueBox({
+  valueBox(
+    yearly_summary_long %>%
+      filter(measure == 'median_days_to_read') %>%
+      pull(raw_diff) %>%
+      scales::comma(),
+    caption = 'Fewer days per book'
+  )
+})
+```
+
+
+Row {data-height=275}
+-----------------------------------------------------------------------
+
+### Top Authors By Pages Read
+
+```{r}
+p_authors_pages
+```
+
+### Top Authors By Books Read
+
+```{r}
+ggplotly(p_authors_books)
+```
+
+### Top Genre Tags
+
+```{r}
+
+renderBubbles({
+  bubbles(
+    value = top_genres %>% filter(year_read == 2019) %>% pull(books), 
+    label = top_genres %>% filter(year_read == 2019) %>% pull(shelf)
+  )
+})
+
+
+```
+
+Row {data-height=450}
+-----------------------------------------------------------------------
+
+### Cumulative Pages Read
+
+```{r}
+ggplotly(p_pages_by_day)
+```
+
+### Cumulative Books Read
+
+```{r}
+ggplotly(p_books_by_day)
+```
+
+### Reading Pace Since 2018
+
+```{r}
+ggplotly(p_reading_pace)
+```
+

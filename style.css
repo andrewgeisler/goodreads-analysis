@@ -1,0 +1,31 @@
+.navbar {
+  background-color:#C27D38;
+  border-color:#C27D38;
+  font-family: 'CentraleSansRnd';
+  color:#ffffff;
+  font-weight: 700;
+}
+
+ 
+ body {
+  text-align: left;
+  color: #58585a;
+  font-family: 'CentraleSansRnd';
+  font-size: 85%;
+  letter-spacing: 0.05em;
+  line-height:18px;
+  vertical-align: middle;
+} 
+
+.value-box {
+    background-color: #CEAB07;
+}
+
+.value-box .value {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0 0 3px 0;
+    white-space: nowrap;
+    padding: 0;
+    background-color: #CEAB07;
+}
