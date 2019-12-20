@@ -156,7 +156,7 @@ p_authors_pages
 ### Top Authors By Books Read
 
 ```{r}
-ggplotly(p_authors_books)
+p_authors_books
 ```
 
 ### Top Genre Tags

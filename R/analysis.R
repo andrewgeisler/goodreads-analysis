@@ -4,11 +4,12 @@ library(xml2)
 library(lubridate)
 library(zoo)
 library(wesanderson)
+library(plotly)
 
 
 # UDPATE RAW DATA ---------------------------------------------------------
-source('R/get_books_read.R')
-source('R/get_book_genres.R')
+# source('R/get_books_read.R')
+# source('R/get_book_genres.R')
 
 
 # LOAD RAW DATA ---------------------------------------------------------------
