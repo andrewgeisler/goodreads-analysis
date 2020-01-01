@@ -33,7 +33,8 @@ renderValueBox({
     yearly_summary_long %>%
       filter(measure == 'books') %>%
       pull(`2019`) %>%
-      scales::comma()
+      scales::comma(),
+    color = '#C27D38'
   )
 })
 
@@ -48,7 +49,8 @@ renderValueBox({
     yearly_summary_long %>%
       filter(measure == 'pages') %>%
       pull(`2019`) %>%
-      scales::comma()
+      scales::comma(),
+    color = '#C27D38'
   )
 })
 
@@ -62,7 +64,8 @@ renderValueBox({
     yearly_summary_long %>%
       filter(measure == 'avg_pages_per_day') %>%
       pull(`2019`) %>%
-      scales::comma()
+      scales::comma(),
+    color = '#C27D38'
   )
 })
 ```
@@ -75,7 +78,8 @@ renderValueBox({
     yearly_summary_long %>%
       filter(measure == 'median_days_to_read') %>%
       pull(`2019`) %>%
-      scales::comma()
+      scales::comma(),
+    color = '#C27D38'
   )
 })
 ```
@@ -93,7 +97,8 @@ renderValueBox({
       filter(measure == 'books') %>%
       pull(raw_diff) %>%
       scales::comma(),
-    caption = 'More books read in 2019'
+    caption = 'More books in 2019',
+    color = '#CCC591'
     )
 })
 
@@ -109,7 +114,8 @@ renderValueBox({
       filter(measure == 'pages') %>%
       pull(raw_diff) %>%
       scales::comma(),
-    caption = 'More pages read in 2019'
+    caption = 'More pages in 2019',
+    color = '#CCC591'
   )
 })
 
@@ -124,7 +130,8 @@ renderValueBox({
       filter(measure == 'avg_pages_per_day') %>%
       pull(raw_diff) %>%
       scales::comma(),
-    caption = 'Increase in pages read per day'
+    caption = 'Increase in pages per day',
+    color = '#CCC591'
   )
 })
 ```
@@ -138,14 +145,31 @@ renderValueBox({
       filter(measure == 'median_days_to_read') %>%
       pull(raw_diff) %>%
       scales::comma(),
-    caption = 'Fewer days per book'
+    caption = 'Fewer days per book',
+    color = '#CCC591'
   )
 })
 ```
 
-
-Row {data-height=275}
+Row {data-height=500}
 -----------------------------------------------------------------------
+
+### 2019 Book Calendar
+
+```{r}
+ggplotly(p_reading_pace)
+```
+
+
+### Books Read by Monthly
+
+```{r}
+p_books_by_month
+```
+
+Row {data-height=300}
+-----------------------------------------------------------------------
+
 
 ### Top Authors By Pages Read
 
@@ -159,38 +183,33 @@ p_authors_pages
 p_authors_books
 ```
 
+
+Row {data-height=400}
+-----------------------------------------------------------------------
+
 ### Top Genre Tags
 
 ```{r}
 
-renderBubbles({
-  bubbles(
-    value = top_genres %>% filter(year_read == 2019) %>% pull(books), 
-    label = top_genres %>% filter(year_read == 2019) %>% pull(shelf)
-  )
-})
+p_top_genres
+
 
 
 ```
 
-Row {data-height=450}
------------------------------------------------------------------------
-
-### Cumulative Pages Read
+### NRC Sentiment Score Analysis
 
 ```{r}
-ggplotly(p_pages_by_day)
+
+p_sentiments
+
 ```
 
-### Cumulative Books Read
 
-```{r}
-ggplotly(p_books_by_day)
-```
 
-### Reading Pace Since 2018
 
-```{r}
-ggplotly(p_reading_pace)
-```
+
+
+
+
 

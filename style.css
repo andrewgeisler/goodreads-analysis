@@ -1,11 +1,14 @@
 .navbar {
-  background-color:#C27D38;
-  border-color:#C27D38;
+  background-color:#798E87;
+  border-color:#798E87;
   font-family: 'CentraleSansRnd';
   color:#ffffff;
   font-weight: 700;
 }
 
+.navbar-brand {
+    font-size: 300%;
+}
  
  body {
   text-align: left;
@@ -18,14 +21,17 @@
 } 
 
 .value-box {
-    background-color: #CEAB07;
+  height: 55px;
+}
+
+.value-box .caption {
+    font-size: 175%;
 }
 
 .value-box .value {
-    font-size: 25px;
+    font-size: 250%;
     font-weight: bold;
     margin: 0 0 3px 0;
     white-space: nowrap;
     padding: 0;
-    background-color: #CEAB07;
 }
