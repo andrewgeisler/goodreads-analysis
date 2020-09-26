@@ -186,7 +186,8 @@ book_sentiments <- book_quotes %>%
 
 
 
-## SAVE DATA
+## SAVE DATA --------
+write_lines(today(), path = 'data/date_updated.txt')
 write_csv(books_read, path = 'data/books_read.csv')
 write_csv(top_shelves, 'data/top_shelves.csv')
 write_csv(book_quotes, 'data/book_quotes.csv')
