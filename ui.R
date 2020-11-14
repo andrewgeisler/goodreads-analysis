@@ -73,7 +73,7 @@ body <- dashboardBody(
         column(6,span(class='head','Total Books'), plotlyOutput('p_books_read')),
         column(6,span(class='head','Total Pages'), plotlyOutput('p_pages_read'))
       ),
-        column(12,span(class='head','Reading Pace (30 Day Rolling Average Pages Read Per Day'), plotlyOutput('p_reading_pace'))
+        column(12,span(class='head','Reading Pace (30 Day Rolling Average Pages Read Per Day)'), plotlyOutput('p_reading_pace'))
       )
     ),
    tabItem(

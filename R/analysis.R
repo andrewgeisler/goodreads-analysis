@@ -20,6 +20,8 @@ book_quotes <- read_csv('data/book_quotes.csv')
 
 # INPUT MISSING PAGE NUMBERS ----------------------------------------------
 
+books_read %>% filter(book_id == 78687) %>% select(title)
+
 books_read <- books_read %>%
   mutate(
     year_read = year(started_at),
@@ -27,6 +29,7 @@ books_read <- books_read %>%
       title == 'Tender: Stories' ~ 288,
       title == 'Tabloid Dreams' ~ 244,
       title == 'Exhalation' ~ 350,
+      title == 'Brightness Falls from the Air' ~ 382,
       TRUE ~ num_pages
     )
   )

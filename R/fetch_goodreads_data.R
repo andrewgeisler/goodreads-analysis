@@ -82,6 +82,19 @@ fetch_read_books <- function() {
 ### EXTRACT DATA FROM GOODREADS
 books_read <- fetch_read_books()
 
+## MISSING PAGES 
+
+books_read <- books_read %>%
+  mutate(
+    num_pages = case_when(
+      book_id == '78687' ~ '240',
+      book_id == '43526443' ~ '288',
+      book_id == '384009' ~ '224',
+      book_id == '52222275' ~ '350',
+      TRUE~num_pages
+    )
+  )
+
 
 # FETCH BOOK GENRES -------------------------------------------------------
 
